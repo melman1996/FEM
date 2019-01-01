@@ -1,0 +1,50 @@
+{
+  "initial_temperature": 0,
+  "time": 1000000,
+  "step": 1000,
+  "ambient_temperature": 22,
+  "Y": 0.02,
+  "nY": 21,
+  "layers": [
+    {
+      "alfa": 2.476780186,
+      "X": 0.001,
+      "nX": 1,
+      "specific_heat": 840,
+      "conductivity": 0.8,
+      "density": 2500
+    },
+    {
+      "alfa": 2.476780186,
+      "X": 0.005,
+      "nX": 5,
+      "specific_heat": 1008,
+      "conductivity": 0.025,
+      "density": 1.23
+    },
+    {
+      "alfa": 2.476780186,
+      "X": 0.001,
+      "nX": 1,
+      "specific_heat": 840,
+      "conductivity": 0.8,
+      "density": 2500
+    },
+    {
+      "alfa": 2.476780186,
+      "X": 0.005,
+      "nX": 5,
+      "specific_heat": 1008,
+      "conductivity": 0.025,
+      "density": 1.23
+    },
+    {
+      "alfa": 2.476780186,
+      "X": 0.001,
+      "nX": 1,
+      "specific_heat": 840,
+      "conductivity": 0.8,
+      "density": 2500
+    }
+  ]
+}
