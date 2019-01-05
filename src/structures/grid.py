@@ -16,11 +16,8 @@ class Grid:
 
         self.initialize_universal_elements()
         self.map_matrices()
-        pprint(self.H)
-        pprint(self.C)
-        print(self.P)
 
-    def calculate(self):
+    def calculate(self, toprint):
         t0 = [node.t for node in self.nodes]
         self.temperatures.append(t0)
         cdtp = [
@@ -29,8 +26,9 @@ class Grid:
         t1 = solve(self.HCT, cdtp)
         self.update_temperatures(t1)
         self.temperatures.append(t1)
-        print("----------Iteration----------")
-        print("Min: {}, max: {}".format(min(t1), max(t1)))
+        if toprint:
+            # print(min(t1))
+            print("Min: {}, Max: {}".format(min(t1), max(t1)))
         return t1
 
     def initialize_universal_elements(self):

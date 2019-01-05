@@ -1,8 +1,14 @@
+from tabulate import tabulate
 import json
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
+
+#pretty print matrice
+def pprint(name, matrix):
+    print(name + ":")
+    print(tabulate(matrix))
 
 #czytanie pliku
 def read_json_from_file(path):

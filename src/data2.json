@@ -16,24 +16,8 @@
     },
     {
       "alfa": 7,
-      "X": 0.012,
-      "nX": 6,
-      "specific_heat": 1008,
-      "conductivity": 0.025,
-      "density": 1.23
-    },
-    {
-      "alfa": 7,
-      "X": 0.004,
-      "nX": 2,
-      "specific_heat": 840,
-      "conductivity": 0.8,
-      "density": 2500
-    },
-    {
-      "alfa": 7,
-      "X": 0.012,
-      "nX": 6,
+      "X": 0.016,
+      "nX": 8,
       "specific_heat": 1008,
       "conductivity": 0.025,
       "density": 1.23

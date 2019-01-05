@@ -9,7 +9,7 @@ class Node:
         self.bc = False
 
     def show(self):
-        print("Node: id({}), coord({}), temp({})".format(self.id, self.coord, self.t))
+        print("x: {}, y: {}".format(self.coord[0], self.coord[1]))
 
 
 class Element:
@@ -18,8 +18,7 @@ class Element:
         self.K = K
 
     def show(self):
-        print("Element: k({})".format(self.K))
+        print("Element:")
         for node in self.nodes:
             node.show()
-        print("---------------------------------------")
 

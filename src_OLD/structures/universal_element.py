@@ -19,109 +19,104 @@ class UniversalElement:
         self.tot = tot
         self.length = [0, 0, 0, 0]
 
-        self.detJ = []
-        self.dNdX = []
-        self.dNdY = []
-
-        self.P = []
-        self.H = []
-        self.C = []
-
+        self.generate_matrices()
         self.generate_matrix_J()
         self.generate_matrix_H()
         self.generate_matrix_C()
         self.generate_matrix_bc_H()
         self.generate_vector_P()
 
-    def generate_matrix_J(self):
+    def generate_matrices(self):
         dndksi = dNdKsi()
-        pdNdKsi = [
+        self.pdNdKsi = [
             [dndksi[i](*point) for point in self.p] for i in range(4)
         ]
         dndeta = dNdEta()
-        pdNdEta = [
+        self.pdNdEta = [
             [dndeta[i](*point) for point in self.p] for i in range(4)
         ]
+
+    def generate_matrix_J(self):
         dKsi = [
             [
                 sum([
-                    self.element.nodes[i].coord[k] * pdNdKsi[i][j] for i in range(4)
+                    self.element.nodes[i].coord[k] * self.pdNdKsi[i][j] for i in range(4)
                 ]) for j in range(4)
             ] for k in range(2)
         ]
         dEta = [
             [
                 sum([
-                    self.element.nodes[i].coord[k] * pdNdEta[i][j] for i in range(4)
+                    self.element.nodes[i].coord[k] * self.pdNdEta[i][j] for i in range(4)
                 ]) for j in range(4)
             ] for k in range(2)
         ]
-        jxx = dKsi + dEta
+        self.jxx = dKsi + dEta
         self.detJ = [
-            jxx[0][i] * jxx[3][i] - jxx[1][i] * jxx[2][i] for i in range(4)
+            self.jxx[0][i] * self.jxx[3][i] - self.jxx[1][i] * self.jxx[2][i] for i in range(4)
         ]
-        jxxx = [
-            [jxx[3][i] / self.detJ[i] for i in range(4)],
-            [-jxx[1][i] / self.detJ[i] for i in range(4)],
-            [jxx[2][i] / self.detJ[i] for i in range(4)],
-            [jxx[0][i] / self.detJ[i] for i in range(4)]
+        self.jxxx = [
+            [self.jxx[3][i] / self.detJ[i] for i in range(4)],
+            [-self.jxx[1][i] / self.detJ[i] for i in range(4)],
+            [self.jxx[2][i] / self.detJ[i] for i in range(4)],
+            [self.jxx[0][i] / self.detJ[i] for i in range(4)]
         ]
         self.dNdX = [
             [
-                jxxx[0][j] * pdNdKsi[i][j] + jxxx[1][j] * pdNdEta[i][j] for i in range(4)
+                self.jxxx[0][j] * self.pdNdKsi[i][j] + self.jxxx[1][j] * self.pdNdEta[i][j] for i in range(4)
             ] for j in range(4)
         ]
         self.dNdY = [
             [
-                jxxx[2][j] * pdNdKsi[i][j] + jxxx[3][j] * pdNdEta[i][j] for i in range(4)
+                self.jxxx[2][j] * self.pdNdKsi[i][j] + self.jxxx[3][j] * self.pdNdEta[i][j] for i in range(4)
             ] for j in range(4)
         ]
 
     def generate_matrix_H(self):
-        dNdXdNdXTDetJ = [
+        self.dNdXdNdXTDetJ = [
             [
                 [
                     self.dNdX[k][i] * self.dNdX[k][j] * self.detJ[k] for i in range(4)
                 ] for j in range(4)
             ] for k in range(4)
         ]
-        dNdYdNdYTDetJ = [
+        self.dNdYdNdYTDetJ = [
             [
                 [
                     self.dNdY[k][i] * self.dNdY[k][j] * self.detJ[k] for i in range(4)
                 ] for j in range(4)
             ] for k in range(4)
         ]
-        Ktimes = [
+        self.Ktimes = [
             [
                 [
-                    self.element.K * (dNdXdNdXTDetJ[k][j][i] + dNdYdNdYTDetJ[k][j][i]) for i in range(4)
+                    self.element.K * (self.dNdXdNdXTDetJ[k][j][i] + self.dNdYdNdYTDetJ[k][j][i]) for i in range(4)
                 ] for j in range(4)
             ] for k in range(4)
         ]
-        self.H = [
+        self.matrixH = [
             [
-                Ktimes[0][j][i] + Ktimes[1][j][i] + Ktimes[2][j][i] + Ktimes[3][j][i] for i in range(4)
+                self.Ktimes[0][j][i] + self.Ktimes[1][j][i] + self.Ktimes[2][j][i] + self.Ktimes[3][j][i] for i in range(4)
             ] for j in range(4)
         ]
 
     def generate_matrix_C(self):
         n = N()
-        Np = [
+        self.Np = [
             [
                 n[i](*point) for i in range(4)
             ] for point in self.p
         ]
-        tmp = [
+        self.tmp = [
             [
                 [
-                    Np[k][i] * Np[k][j] * self.detJ[k] * self.c * self.ro for i in range(4)
+                    self.Np[k][i] * self.Np[k][j] * self.detJ[k] * self.c * self.ro for i in range(4)
                 ] for j in range(4)
             ] for k in range(4)
         ]
         self.C = [
             [
-                tmp[0][j][i] + tmp[1][j][i] + tmp[2][j][i] + tmp[3][j][i] for i in range(4)
+                self.tmp[0][j][i] + self.tmp[1][j][i] + self.tmp[2][j][i] + self.tmp[3][j][i] for i in range(4)
             ] for j in range(4)
         ]
 
@@ -137,7 +132,7 @@ class UniversalElement:
             (-1, -1 / sqrt(3)),
         ]
         n = N()
-        bcH = [[0] * 4 for i in range(4)]
+        self.bcH = [[0] * 4 for i in range(4)]
         for z in range(4):
             index0, index1 = z, z+1
             if index1 >= len(self.element.nodes):
@@ -163,15 +158,15 @@ class UniversalElement:
                         (x + y) * self.length[z]/2 for x, y in zip(list1, list2)
                     ] for list1, list2 in zip(pc0, pc1)
                 ]
-                bcH = [
+                self.bcH = [
                     [
                         x + y for x, y in zip(list1, list2)
-                    ] for list1, list2 in zip(bcH, sum)
+                    ] for list1, list2 in zip(self.bcH, sum)
                 ]
         self.H = [
             [
                 a + b for a, b in zip(list1, list2)
-            ] for list1, list2 in zip(self.H, bcH)
+            ] for list1, list2 in zip(self.matrixH, self.bcH)
         ]
 
     def generate_vector_P(self):
@@ -197,9 +192,3 @@ class UniversalElement:
                 for p in point:
                     for i in range(4):
                         self.P[i] += n[i](*p) * self.alfa * self.tot * self.length[i] / 2
-
-    def show(self):
-        self.element.show()
-        print(self.H)
-        print(self.C)
-        print(self.P)

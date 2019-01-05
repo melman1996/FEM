@@ -6,8 +6,8 @@
   "alfa": 300,
   "H": 0.1,
   "L": 0.1,
-  "nH": 5,
-  "nL": 5,
+  "nH": 4,
+  "nL": 4,
   "specific_heat": 700,
   "conductivity": 25,
   "density": 7800

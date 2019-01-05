@@ -50,7 +50,7 @@ class Application:
 
     def calculate(self):
         for i in range(int(self.time / self.step)):
-            self.grid.calculate()
+            self.grid.calculate(True)
             self.draw()
 
     def initialize_grid(self):
@@ -62,14 +62,14 @@ class Application:
         id = 0
 
         for i in range(self.nY):
-            nodes.append(Node(id, (0, dy * i), self.t))
+            nodes.append(Node(id, (0, dy * i), self.tot))
             id += 1
 
         for layer in self.layers_input:
             dx = layer["X"] / layer["nX"]
             for i in range(1, layer["nX"] + 1):
                 for j in range(self.nY):
-                    nodes.append(Node(id, (dx * i + previous, dy * j), self.t))
+                    nodes.append(Node(id, (dx * i + previous, dy * j), self.tot))
                     id += 1
             previous += layer["X"]
 

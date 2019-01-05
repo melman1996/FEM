@@ -15,7 +15,8 @@ class Grid:
         self.read_file()
         self.initialize_universal_elements()
         self.map_matrices()
-        self.universal_elements[0].show()
+
+        #self.show(0)
 
     def initialize(self):
         t0 = [node.t for node in self.nodes]
